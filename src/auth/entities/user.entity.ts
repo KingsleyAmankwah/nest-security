@@ -18,11 +18,11 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
-  firstName?: string;
+  @Column()
+  firstName: string;
 
-  @Column({ nullable: true })
-  lastName?: string;
+  @Column()
+  lastName: string;
 
   @Column({ type: 'enum', enum: Role, default: Role.Client })
   role: Role;
@@ -31,10 +31,16 @@ export class User {
   isEmailVerified: boolean;
 
   @Column({ nullable: true })
-  emailVerificationToken?: string | null;
+  emailVerificationToken?: string;
+
+  @Column({ nullable: true })
+  emailVerificationTokenExpiresAt?: Date;
 
   @Column({ nullable: true })
   refreshToken?: string;
+
+  @Column({ nullable: true })
+  refreshTokenExpiresAt?: Date;
 
   @CreateDateColumn()
   createdAt: Date;
