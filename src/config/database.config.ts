@@ -24,11 +24,11 @@ export const typeOrmConfig = (
   configService: ConfigService,
 ): TypeOrmModuleOptions => ({
   type: 'postgres',
-  host: configService.get<string>('DATABASE_HOST', 'fallback'),
-  port: configService.get<number>('DATABASE_PORT', 5432),
-  username: configService.get<string>('DATABASE_USER', 'falback'),
-  password: configService.get<string>('DATABASE_PASSWORD', 'fallback'),
-  database: configService.get<string>('DATABASE_NAME', 'fallback'),
+  host: configService.get<string>('DATABASE_HOST'),
+  port: configService.get<number>('DATABASE_PORT'),
+  username: configService.get<string>('DATABASE_USER'),
+  password: configService.get<string>('DATABASE_PASSWORD'),
+  database: configService.get<string>('DATABASE_NAME'),
   entities: [User],
   synchronize: configService.get<string>('NODE_ENV') !== 'production', // Disable in production
   logging: configService.get<string>('NODE_ENV') === 'development', // Enable logging in development
