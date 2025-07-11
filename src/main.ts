@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
-import { corsConfig } from './cors.config';
+import { corsConfig } from './config/cors.config';
 import { LoggingInterceptor } from './common/logging.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 
@@ -32,4 +32,4 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`Application is running on port ${port}`);
 }
-bootstrap();
+void bootstrap();
