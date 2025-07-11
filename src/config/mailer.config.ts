@@ -4,15 +4,15 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 
 export const mailerConfig = (configService: ConfigService): MailerOptions => ({
   transport: {
-    host: configService.get<string>('EMAIL_HOST', 'smtp.gmail.com'),
-    port: configService.get<number>('EMAIL_PORT', 587),
+    host: configService.get<string>('EMAIL_HOST'),
+    port: configService.get<number>('EMAIL_PORT'),
     auth: {
-      user: configService.get<string>('EMAIL_USER', 'your_email@gmail.com'),
-      pass: configService.get<string>('EMAIL_PASS', 'your_email_password'),
+      user: configService.get<string>('EMAIL_USER'),
+      pass: configService.get<string>('EMAIL_PASS'),
     },
   },
   defaults: {
-    from: '"Your App" <no-reply@yourapp.com>',
+    from: '"NestJS Security" <no-reply@nestjs.com>',
   },
   template: {
     dir: process.cwd() + '/src/templates/',
