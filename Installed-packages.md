@@ -1,8 +1,8 @@
 # Installed Packages for this Project
 
 ```javascript
-npm install --save @nestjs/typeorm typeorm pg @nestjs/config @nestjs/passport @nestjs/jwt passport passport-jwt bcrypt helmet express-rate-limit class-validator class-transformer @nestjs/throttler
-npm install --save-dev @types/passport-jwt @types/bcrypt
+npm install --save @nestjs/typeorm typeorm pg @nestjs/config @nestjs/passport @nestjs/jwt passport passport-jwt bcrypt helmet express-rate-limit class-validator class-transformer @nestjs/throttler uuid @nestjs-modules/mailer nodemailer handlebars
+npm install --save-dev @types/passport-jwt @types/bcrypt @types/uuid
 ```
 
 # 🟩 Database and Configuration
