@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './database.config';
+import { typeOrmConfig } from './config/database.config';
 import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
