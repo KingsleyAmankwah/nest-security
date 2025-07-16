@@ -1,18 +1,20 @@
 import { MailerOptions } from '@nestjs-modules/mailer';
-import { ConfigService } from '@nestjs/config';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { AppConfigService } from './app-config.service';
 
-export const mailerConfig = (configService: ConfigService): MailerOptions => ({
+export const mailerConfig = (
+  configService: AppConfigService,
+): MailerOptions => ({
   transport: {
-    host: configService.get<string>('EMAIL_HOST'),
-    port: configService.get<number>('EMAIL_PORT'),
+    host: configService.emailHost,
+    port: configService.emailPort,
     auth: {
-      user: configService.get<string>('EMAIL_USER'),
-      pass: configService.get<string>('EMAIL_PASS'),
+      user: configService.emailUser,
+      pass: configService.emailPassword,
     },
   },
   defaults: {
-    from: '"NestJS Security" <no-reply@nestjs.com>',
+    from: `"NestJS Security" ${configService.emailUser}`,
   },
   template: {
     dir: process.cwd() + '/src/templates/',
