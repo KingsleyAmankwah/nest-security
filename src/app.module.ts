@@ -21,6 +21,7 @@ import { AppConfigModule, AppConfigService } from './config';
           },
         ],
       }),
+      inject: [AppConfigService],
     }),
     AuthModule,
   ],
