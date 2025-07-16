@@ -11,7 +11,6 @@ import { mailerConfig } from 'src/config/mailer.config';
 
 @Module({
   imports: [
-    ConfigModule,
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
