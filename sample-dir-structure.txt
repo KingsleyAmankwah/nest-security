@@ -1,0 +1,92 @@
+src/
+├── app.module.ts
+├── main.ts
+├── config/
+│ ├── app.config.ts
+│ ├── database.config.ts
+│ └── jwt.config.ts
+├── common/
+│ ├── decorators/
+│ │ ├── roles.decorator.ts
+│ │ └── current-user.decorator.ts
+│ ├── guards/
+│ │ ├── auth.guard.ts
+│ │ ├── roles.guard.ts
+│ │ └── jwt-auth.guard.ts
+│ ├── interceptors/
+│ │ ├── logging.interceptor.ts
+│ │ └── transform.interceptor.ts
+│ ├── filters/
+│ │ ├── all-exceptions.filter.ts
+│ │ └── http-exception.filter.ts
+│ ├── pipes/
+│ │ └── validation.pipe.ts
+│ ├── dto/
+│ │ ├── pagination.dto.ts
+│ │ └── base-response.dto.ts
+│ ├── entities/
+│ │ └── base.entity.ts
+│ └── constants/
+│ └── app.constants.ts
+├── database/
+│ ├── migrations/
+│ ├── seeds/
+│ └── database.module.ts
+├── modules/
+│ ├── auth/
+│ │ ├── auth.module.ts
+│ │ ├── auth.controller.ts
+│ │ ├── auth.service.ts
+│ │ ├── dto/
+│ │ │ ├── login.dto.ts
+│ │ │ ├── register.dto.ts
+│ │ │ └── forgot-password.dto.ts
+│ │ ├── entities/
+│ │ │ └── user.entity.ts
+│ │ ├── guards/
+│ │ │ └── local-auth.guard.ts
+│ │ ├── strategies/
+│ │ │ ├── jwt.strategy.ts
+│ │ │ └── local.strategy.ts
+│ │ └── interfaces/
+│ │ └── jwt-payload.interface.ts
+│ ├── users/
+│ │ ├── users.module.ts
+│ │ ├── users.controller.ts
+│ │ ├── users.service.ts
+│ │ ├── dto/
+│ │ │ ├── create-user.dto.ts
+│ │ │ ├── update-user.dto.ts
+│ │ │ └── user-response.dto.ts
+│ │ ├── entities/
+│ │ │ └── user.entity.ts
+│ │ └── repositories/
+│ │ └── user.repository.ts
+│ ├── products/
+│ │ ├── products.module.ts
+│ │ ├── products.controller.ts
+│ │ ├── products.service.ts
+│ │ ├── dto/
+│ │ │ ├── create-product.dto.ts
+│ │ │ ├── update-product.dto.ts
+│ │ │ └── product-response.dto.ts
+│ │ ├── entities/
+│ │ │ └── product.entity.ts
+│ │ └── repositories/
+│ │ └── product.repository.ts
+│ └── orders/
+│ ├── orders.module.ts
+│ ├── orders.controller.ts
+│ ├── orders.service.ts
+│ ├── dto/
+│ │ ├── create-order.dto.ts
+│ │ ├── update-order.dto.ts
+│ │ └── order-response.dto.ts
+│ ├── entities/
+│ │ └── order.entity.ts
+│ └── repositories/
+│ └── order.repository.ts
+└── utils/
+├── bcrypt.util.ts
+├── date.util.ts
+└── string.util.ts
