@@ -1,24 +1,26 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/database.config';
 import { AuthModule } from './auth/auth.module';
+import { AppConfigModule, AppConfigService } from './config';
+
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    AppConfigModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
       useFactory: typeOrmConfig,
-      inject: [ConfigService],
+      inject: [AppConfigService],
     }),
-    ThrottlerModule.forRoot({
-      throttlers: [
-        {
-          ttl: 60,
-          limit: 100,
-        },
-      ],
+    ThrottlerModule.forRootAsync({
+      useFactory: (ConfigService: AppConfigService) => ({
+        throttlers: [
+          {
+            ttl: 60,
+            limit: ConfigService.isDevelopment ? 100 : 10,
+          },
+        ],
+      }),
     }),
     AuthModule,
   ],
