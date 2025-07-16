@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
+import { AppConfigService } from './config/app-config.service';
 import helmet from 'helmet';
 import { corsConfig } from './config/cors.config';
 import { LoggingInterceptor } from './common/logging.interceptor';
@@ -8,7 +8,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
+  const configService = app.get(AppConfigService);
 
   // Security headers
   app.use(helmet());
@@ -19,16 +19,16 @@ async function bootstrap() {
   // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
+      transform: true, // auto-transform payloads to DTO instances
+      whitelist: true, // strips properties that aren't in DTO
+      forbidNonWhitelisted: true, // throws if extra fields are sent
     }),
   );
 
   // Global logging interceptor
   app.useGlobalInterceptors(new LoggingInterceptor());
 
-  const port = configService.get<number>('PORT', 3000);
+  const port = configService.port || 3000;
   await app.listen(port);
   console.log(`Application is running on port ${port}`);
 }
