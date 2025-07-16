@@ -127,9 +127,13 @@ export class AuthService {
     const { email, password } = loginDto;
     const user = await this.userRepository.findOne({ where: { email } });
 
-    if (!user?.isEmailVerified) {
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    if (!user.isEmailVerified) {
       throw new UnauthorizedException(
-        'Invalid credentials or email not verified',
+        'Email not verified. Please verify to proceed.',
       );
     }
 
