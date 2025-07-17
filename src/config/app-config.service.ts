@@ -21,6 +21,9 @@ export class AppConfigService {
   get isDevelopment() {
     return this.nodeEnv === 'development';
   }
+  get frontendURL() {
+    return this.configService.get<string>('FRONTEND_URL');
+  }
 
   // Database configuration
   get databaseUser() {
