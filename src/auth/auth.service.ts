@@ -9,18 +9,18 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '@nestjs/config';
 import { MailerService } from '@nestjs-modules/mailer';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { AppConfigService } from 'src/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly configService: ConfigService,
+    private readonly configService: AppConfigService,
     private readonly mailerService: MailerService,
     private readonly jwtService: JwtService,
   ) {}
@@ -61,7 +61,7 @@ export class AuthService {
 
     await this.userRepository.save(user);
 
-    const verificationUrl = `${this.configService.get<string>('FRONTEND_URL')}/verify-email?token=${verificationToken}&userId=${user.id}`;
+    const verificationUrl = `${this.configService.frontendURL}/verify-email?token=${verificationToken}&userId=${user.id}`;
     await this.mailerService.sendMail({
       to: email,
       subject: 'Verify Your Email Address',
@@ -145,8 +145,8 @@ export class AuthService {
     const payload = { sub: user.id, role: user.role };
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign(payload, {
-      secret: this.configService.get('JWT_REFRESH_SECRET'),
-      expiresIn: '7d',
+      secret: this.configService.jwtRefreshSecret,
+      expiresIn: this.configService.jwtRefreshExpiresIn,
     });
 
     user.refreshToken = await bcrypt.hash(refreshToken, 10);
@@ -241,7 +241,7 @@ export class AuthService {
     user.emailVerificationTokenExpiresAt = expiresAt;
     await this.userRepository.save(user);
 
-    const verificationUrl = `${this.configService.get<string>('FRONTEND_URL')}/verify-email?token=${verificationToken}&userId=${user.id}`;
+    const verificationUrl = `${this.configService.frontendURL}/verify-email?token=${verificationToken}&userId=${user.id}`;
     await this.mailerService.sendMail({
       to: email,
       subject: 'Request Email Verification',
@@ -271,7 +271,10 @@ export class AuthService {
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (!user) {
-      throw new BadRequestException('User not found');
+      return {
+        message:
+          'If an account with that email exists, a password reset link has been sent.',
+      };
     }
 
     const resetToken = uuidv4();
@@ -282,7 +285,7 @@ export class AuthService {
     user.emailVerificationTokenExpiresAt = expiresAt;
     await this.userRepository.save(user);
 
-    const resetPasswordUrl = `${this.configService.get<string>('FRONTEND_URL')}/reset-password?token=${resetToken}&userId=${user.id}`;
+    const resetPasswordUrl = `${this.configService.frontendURL}/reset-password?token=${resetToken}&userId=${user.id}`;
     await this.mailerService.sendMail({
       to: email,
       subject: 'Reset Your Password',
