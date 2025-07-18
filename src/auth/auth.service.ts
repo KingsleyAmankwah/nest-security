@@ -60,22 +60,27 @@ export class AuthService {
     });
 
     await this.userRepository.save(user);
+    try {
+      const verificationUrl = `${this.configService.frontendURL}/verify-email?token=${verificationToken}&userId=${user.id}`;
+      await this.mailerService.sendMail({
+        to: email,
+        subject: 'Verify Your Email Address',
+        template: 'verify-email',
+        context: {
+          firstName: firstName,
+          verificationUrl,
+        },
+      });
 
-    const verificationUrl = `${this.configService.frontendURL}/verify-email?token=${verificationToken}&userId=${user.id}`;
-    await this.mailerService.sendMail({
-      to: email,
-      subject: 'Verify Your Email Address',
-      template: 'verify-email',
-      context: {
-        firstName: firstName,
-        verificationUrl,
-      },
-    });
-
-    return {
-      message:
-        'Registration successful, please check your email to verify your account.',
-    };
+      return {
+        message:
+          'Registration successful, please check your email to verify your account.',
+      };
+    } catch {
+      throw new BadRequestException(
+        'Registration successful, but email could not be sent',
+      );
+    }
   }
 
   /* 
@@ -143,7 +148,10 @@ export class AuthService {
     }
 
     const payload = { sub: user.id, role: user.role };
-    const accessToken = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload, {
+      secret: this.configService.jwtSecret,
+      expiresIn: this.configService.jwtExpiresIn,
+    });
     const refreshToken = this.jwtService.sign(payload, {
       secret: this.configService.jwtRefreshSecret,
       expiresIn: this.configService.jwtRefreshExpiresIn,
