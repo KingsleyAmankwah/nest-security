@@ -64,7 +64,7 @@ export class AppConfigService {
   }
 
   get jwtExpiresIn() {
-    return this.configService.get<string>('JWT_EXPIRATION', '24h');
+    return this.configService.get<string>('JWT_EXPIRATION');
   }
 
   get jwtRefreshSecret() {
