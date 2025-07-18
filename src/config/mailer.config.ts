@@ -14,7 +14,7 @@ export const mailerConfig = (
     },
   },
   defaults: {
-    from: `"NestJS Security" ${configService.emailUser}`,
+    from: `"NestJS Security" <${configService.emailUser}>`,
   },
   template: {
     dir: process.cwd() + '/src/templates/',
